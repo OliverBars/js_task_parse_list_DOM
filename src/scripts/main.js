@@ -2,15 +2,22 @@
 
 // write code here
 
-const list = document.querySelector('ul');
-const items = [...document.querySelectorAll('li')];
+const getEmployees = () => {
+  const items = [...document.querySelectorAll('li[data-salary]')];
 
-items.sort((a, b) => {
-  const getNumericSalary = (el) => {
-    return parseFloat(el.dataset.salary.replace(/[^0-9.-]+/g, ''));
-  };
+  return items.map((item) => ({
+    element: item,
+    salary: parseFloat(item.dataset.salary.replace(/[^0-9.-]+/g, '')),
+  }));
+};
 
-  return getNumericSalary(a) - getNumericSalary(b);
-});
+const sortList = () => {
+  const list = document.querySelector('ul');
+  const employees = getEmployees();
 
-items.forEach((item) => list.appendChild(item));
+  employees.sort((a, b) => b.salary - a.salary);
+
+  employees.forEach((obj) => list.appendChild(obj.element));
+};
+
+sortList();
